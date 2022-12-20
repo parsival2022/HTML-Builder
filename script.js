@@ -17,11 +17,13 @@ const PARAG_CLOSE_TAG = '</p>'
 
 function htmlBuild(openToken, openTag, closeToken, closeTag){
     const inputText = input.value
-    console.log(inputText.split(' '))
     const output =  inputText.replaceAll(/\n\n/g, '   ').split(' ').map(item => {
-        console.log(item)
-        return item.includes(openToken)
+        return item.includes(openTag)
+        ? item
+        : item.includes(openToken)
         ? ` ${item.replaceAll(openToken, openTag)}">\n`
+        : item.includes(closeTag)
+        ? item
         : item.includes(closeToken)
         ? `\n ${item.replaceAll(closeToken, closeTag)}\n`
         : item 
