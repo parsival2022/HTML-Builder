@@ -15,37 +15,64 @@ const PARAG_CLOSE_TAG = '</p>'
 
 
 
-function htmlBuild(openToken, openTag, closeToken, closeTag){
+
+function htmlBuild(payload){
     const inputText = input.value
-    const output =  inputText.replaceAll(/\n\n/g, '   ').split(' ').map(item => {
-        return item.includes(openTag)
-        ? item
-        : item.includes(openToken)
-        ? `\n ${item.replaceAll(openToken, openTag)}">`
-        : item.includes(closeTag)
-        ? item
-        : item.includes(closeToken)
-        ? `\n ${item.replaceAll(closeToken, closeTag)}\n`
-        : item 
-    }).join(' ')
-    return output
+    switch(payload.action){
+        case 'create div': return htmlCreator(inputText, payload.openTag, payload.openToken, payload.closeTag, payload.closeToken)
+        break
+        case 'create section': return htmlCreator(inputText, payload.openTag, payload.openToken, payload.closeTag, payload.closeToken) 
+        break
+        case 'create paragraph': return htmlCreator(inputText, payload.openTag, payload.openToken, payload.closeTag, payload.closeToken) 
+    }
+}
+
+function htmlCreator(input, openTag, openToken, closeTag, closeToken){
+    const output =  input.replaceAll(/\n\n/g, '   ')
+                              .split(' ')
+                              .map(item => {
+                return item.includes(openTag)
+                ? item
+                : item.includes(openToken)
+                ? `\n  ${item.replaceAll(openToken, openTag)}">`
+                : item.includes(closeTag)
+                ? item
+                : item.includes(closeToken)
+                ? `\n ${item.replaceAll(closeToken, closeTag)}\n`
+                : item 
+            }).join(' ')
+            return output 
 }
 
 function div(){
-    return input.value = htmlBuild(DIV_OPEN_TOKEN, DIV_OPEN_TAG, DIV_CLOSE_TOKEN, DIV_CLOSE_TAG)
+    return input.value = htmlBuild({action: 'create div', 
+                                    openTag: DIV_OPEN_TAG, 
+                                    openToken: DIV_OPEN_TOKEN, 
+                                    closeTag: DIV_CLOSE_TAG, 
+                                    closeToken: DIV_CLOSE_TOKEN})
     
 }
 function section(){
-    return input.value = htmlBuild(SECTION_OPEN_TOKEN, SECTION_OPEN_TAG, SECTION_CLOSE_TOKEN, SECTION_CLOSE_TAG)
+    return input.value = htmlBuild({action: 'create section',
+                                    openTag: SECTION_OPEN_TAG, 
+                                    openToken: SECTION_OPEN_TOKEN, 
+                                    closeTag: SECTION_CLOSE_TAG, 
+                                    closeToken: SECTION_CLOSE_TOKEN})
 }
 function paragraph(){
-    return input.value = htmlBuild(PARAG_OPEN_TOKEN, PARAG_OPEN_TAG, PARAG_CLOSE_TOKEN, PARAG_CLOSE_TAG)
+    return input.value = htmlBuild({action: 'create paragraph',
+                                    openTag: PARAG_OPEN_TAG, 
+                                    openToken: PARAG_OPEN_TOKEN, 
+                                    closeTag: PARAG_CLOSE_TAG, 
+                                    closeToken: PARAG_CLOSE_TOKEN})
 }
+
  function modifyAll(){
     div()
     section()
     paragraph()
  }
+
 
 
 
