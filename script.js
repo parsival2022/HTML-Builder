@@ -21,7 +21,7 @@ function htmlBuild(openToken, openTag, closeToken, closeTag){
         return item.includes(openTag)
         ? item
         : item.includes(openToken)
-        ? ` ${item.replaceAll(openToken, openTag)}">\n`
+        ? `\n ${item.replaceAll(openToken, openTag)}">`
         : item.includes(closeTag)
         ? item
         : item.includes(closeToken)
